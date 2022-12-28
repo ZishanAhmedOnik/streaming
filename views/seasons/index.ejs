@@ -1,0 +1,26 @@
+<%- include('../partials/header'); %> <%- include('../partials/navbar'); %>
+<style>
+  p {
+    margin: 0;
+  }  
+</style>
+<base href="seasons/" />
+<div class="container">
+  <h1>season</h1>
+  <ul class="list-group mb-2">
+    <% seasons.forEach(season => {%>
+    <li
+      class="list-group-item d-flex list-group-item-action justify-content-between align-items-center"
+    >
+      <p><%= season.Name %></p>
+      <a href="<%= season.Id %>/episodes/" class="btn btn-success"
+        ><i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Go to Episodes</a
+      >
+    </li>
+    <%}) %>
+  </ul>
+  <a href="addseason/" class="btn btn-primary">
+    <span class="fa-sharp fa-solid fa-plus"></span> Add a Season
+  </a>
+</div>
+<%- include('../partials/footer'); %>

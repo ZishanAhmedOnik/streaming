@@ -1,0 +1,23 @@
+<%- include('../partials/header'); %> <%- include('../partials/navbar'); %>
+<base href="seasons/" />
+<div class="container">
+  <h1>Add a Season</h1>
+  <form method="post">
+    <div class="form-group">
+      <div class="form-group">
+        <input
+          class="form-control form-control-lg mb-2"
+          type="text"
+          placeholder="Season Name"
+          id="seasonName"
+          name="Name"
+          required
+        />
+        <button class="btn btn-success">
+          <span><i class="fa-sharp fa-solid fa-floppy-disk"></i> </span>Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<%- include('../partials/footer'); %>

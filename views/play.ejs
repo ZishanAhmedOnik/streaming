@@ -1,0 +1,44 @@
+<%- include('./partials/header'); %> <%- include('./partials/navbar'); %>
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+    <div class="container mt-2">
+      <h4 class="mb-5"><%= file.SeasonName %> - <%= file.FileName %></h4>
+      <video
+        id="hls-example"
+        class="video-js vjs-default-skin mb-2"
+        controls
+        style="width: 100%;"
+      >
+        <source
+          type="application/x-mpegURL"
+          src="http://zishanonik.com/videos/<%= file.FilePath %>"
+        />
+      </video>
+      <a href="/seasons/<%= file.SeasonId %>/episodes/" class="btn btn-success"
+      ><i class="fa-solid fa-arrow-left"></i> Back to <%= file.SeasonName %></a
+    >
+    </div>
+  </body>
+
+  <script>
+    $(document).ready(() => {
+      const player = videojs("hls-example");
+      const currentTime = '<%= file.CurrentTime %>';
+      player.currentTime(currentTime);
+      player.on('loadedmetadata', () => {
+          setInterval(() => {
+              const fileId = '<%= file.Id %>';
+              $.post("/api/file/postStats", {
+                  fileId: fileId,
+                  currentTime: player.currentTime(),
+                  duration: player.duration()
+              }).fail((err) => {
+                  console.log(err);
+              })
+          }, 1000);
+      })
+      player.play();
+   })
+  </script>
+<%- include('./partials/footer'); %>
+
