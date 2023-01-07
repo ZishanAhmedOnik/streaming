@@ -2,22 +2,65 @@
 <base href="seasons/" />
 <div class="container">
   <h1>Add a Season</h1>
-  <form method="post">
+  <form
+    method="post"
+    enctype="multipart/form-data"
+    id="fileform"
+    action="/api/season/fileupload"
+  >
+    <div class="form-group mb-2">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Season Name"
+        id="seasonName"
+        name="Name"
+        required
+      />
+    </div>
+
+    <div class="form-group mb-2">
+      <input
+        class="form-control"
+        type="file"
+        id="files"
+        name="files"
+        multiple
+        required
+      />
+    </div>
+
     <div class="form-group">
-      <div class="form-group">
-        <input
-          class="form-control form-control-lg mb-2"
-          type="text"
-          placeholder="Season Name"
-          id="seasonName"
-          name="Name"
-          required
-        />
-        <button class="btn btn-success">
-          <span><i class="fa-sharp fa-solid fa-floppy-disk"></i> </span>Save
-        </button>
-      </div>
+      <button class="btn btn-success">
+        <span><i class="fa-sharp fa-solid fa-floppy-disk"></i> </span>Save
+      </button>
     </div>
   </form>
+
+  <p id="status"></p>
 </div>
+<script>
+  $(document).ready(() => {
+    $("#fileform").on("submit", (e) => {
+      $("#status").text("UPLOADING...");
+      e.preventDefault();
+      const fd = new FormData();
+      const files = $("#files")[0].files;
+      for (let i = 0; i < files.length; i++) {
+        fd.append("files", files[i]);
+      }
+      fd.append("seasonName", $("#seasonName").val());
+      $.ajax({
+        url: "/api/season/fileupload",
+        type: "post",
+        data: fd,
+        contentType: false,
+        processData: false,
+        success: (response) => {
+          $("#status").text("UPLOADED!");
+        },
+      });
+    });
+  });
+</script>
 <%- include('../partials/footer'); %>

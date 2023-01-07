@@ -5,7 +5,9 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
-const seasonsRouteer = require("./routes/seasons");
+const seasonsRoutes = require("./routes/seasons");
+const tasksRoutes = require("./routes/tasks");
+
 const apiRoutes = require("./routes/api/index");
 
 var app = express();
@@ -21,7 +23,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/seasons/", seasonsRouteer);
+app.use("/seasons/", seasonsRoutes);
+app.use("/tasks/", tasksRoutes);
 
 //API routes
 app.use("/api", apiRoutes);

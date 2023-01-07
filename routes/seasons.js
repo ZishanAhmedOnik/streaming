@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Season = require("../models/Season.model");
+const publisher = require("../redis/publisher");
 
 router.get("/", async (_, res) => {
   const seasons = await Season.GetAll();
@@ -12,7 +13,7 @@ router.get("/addseason", (_, res) => {
 });
 
 router.post("/addseason", async (req, res) => {
-  // await Season.AddSeason(req.body.Name);
+  publisher.publish("message", JSON.stringify(req.body));
   res.redirect("/seasons");
 });
 

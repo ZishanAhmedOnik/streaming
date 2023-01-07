@@ -2,7 +2,7 @@ CREATE TABLE `Seasons` (
   `Id` int NOT NULL,
   `Name` varchar(255) NOT NULL,
   PRIMARY KEY (`Id`)
-)
+);
 
 ALTER TABLE `Seasons` 
 CHANGE COLUMN `Id` `Id` INT NOT NULL AUTO_INCREMENT ;

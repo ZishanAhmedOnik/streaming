@@ -1,0 +1,30 @@
+<%- include('../partials/header'); %> <%- include('../partials/navbar'); %>
+<div class="container">
+  <h1>LIST OF TASKS WILL SHOW UP HERE</h1>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td class="text-center">Task Name</td>
+        <td class="text-center">Progress</td>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+<script>
+  $(document).ready(() => {
+    setInterval(() => {
+      $.getJSON("/api/tasks", (data) => {
+        let tbody = "";
+        for (let i = 0; i < data.length; i++) {
+          tbody = tbody.concat(`<tr>
+                <td class="text-center">${data[i].key}</td>
+                <td class="text-center">${data[i].val}</td>
+            </tr>`);
+        }
+        $("#tbody").html(tbody);
+      });
+    }, 1000);
+  });
+</script>
+<%- include('../partials/footer'); %>
