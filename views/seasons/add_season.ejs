@@ -39,28 +39,56 @@
 
   <p id="status"></p>
 </div>
-<script>
+<script type="text/javascript">
   $(document).ready(() => {
-    $("#fileform").on("submit", (e) => {
+    $("#fileform").on("submit", async (e) => {
       $("#status").text("UPLOADING...");
       e.preventDefault();
-      const fd = new FormData();
-      const files = $("#files")[0].files;
-      for (let i = 0; i < files.length; i++) {
-        fd.append("files", files[i]);
-      }
-      fd.append("seasonName", $("#seasonName").val());
+      const resp = await createSeason();
+      uploadFiles(resp.insertId);
+    });
+  });
+
+  const createSeason = () => {
+    const seasonName = $("#seasonName").val();
+    return new Promise((resolve, reject) => {
       $.ajax({
-        url: "/api/season/fileupload",
+        url: "/api/season/createSeason",
         type: "post",
-        data: fd,
-        contentType: false,
-        processData: false,
+        data: JSON.stringify({
+          seasonName: seasonName,
+        }),
+        contentType: "application/json",
         success: (response) => {
-          $("#status").text("UPLOADED!");
+          resolve(response);
+        },
+        error: (err) => {
+          reject(err);
         },
       });
     });
-  });
+  };
+
+  const uploadFiles = (seasonId) => {
+    const files = $("#files")[0].files;
+    for (let i = 0; i < files.length; i++) {
+      upload(files[i], seasonId);
+    }
+  };
+
+  const upload = (file, seasonId) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    $.ajax({
+      url: `/api/season/fileupload/${seasonId}`,
+      type: "post",
+      data: fd,
+      contentType: false,
+      processData: false,
+      success: (response) => {
+        $("#status").text("UPLOADED!");
+      },
+    });
+  };
 </script>
 <%- include('../partials/footer'); %>
