@@ -1,0 +1,3 @@
+ALTER TABLE `Files` 
+ADD COLUMN `SeasonId` INT NOT NULL DEFAULT 0 AFTER `FilePath`,
+ADD INDEX `SeasonId_idx` (`SeasonId` ASC) VISIBLE;

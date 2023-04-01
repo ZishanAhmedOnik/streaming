@@ -3,17 +3,3 @@ CREATE TABLE `Seasons` (
   `Name` varchar(255) NOT NULL,
   PRIMARY KEY (`Id`)
 );
-
-ALTER TABLE `Seasons` 
-CHANGE COLUMN `Id` `Id` INT NOT NULL AUTO_INCREMENT ;
-
-ALTER TABLE `Files` 
-ADD COLUMN `SeasonId` INT NOT NULL DEFAULT 0 AFTER `FilePath`,
-ADD INDEX `SeasonId_idx` (`SeasonId` ASC) VISIBLE;
-;
-ALTER TABLE `Files` 
-ADD CONSTRAINT `SeasonId`
-  FOREIGN KEY (`SeasonId`)
-  REFERENCES `Seasons` (`Id`)
-  ON DELETE CASCADE
-  ON UPDATE NO ACTION;

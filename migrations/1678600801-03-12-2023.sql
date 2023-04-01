@@ -1,0 +1,2 @@
+ALTER TABLE `Files` 
+CHANGE COLUMN `Order` `OrderInList` INT NOT NULL DEFAULT '0' ;
