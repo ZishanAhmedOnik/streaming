@@ -1,0 +1,8 @@
+<div class="overlay" *ngIf="open" @slideIn @slideOut>
+  <div class="slide-parent">
+    <div>
+      <button (click)="slide()">Close</button>
+    </div>
+    <ng-content></ng-content>
+  </div>
+</div>

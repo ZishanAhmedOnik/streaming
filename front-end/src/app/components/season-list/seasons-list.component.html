@@ -1,0 +1,10 @@
+<div class="d-flex">
+  <div class="card" *ngFor="let season of seasons">
+    <div class="card-body" (click)="showEpisodeSorter(season.Id)">
+      <h1>{{ season.Name }}</h1>
+    </div>
+  </div>
+</div>
+
+<episodes-list></episodes-list>
+<episode-sorter></episode-sorter>

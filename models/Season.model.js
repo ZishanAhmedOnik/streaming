@@ -4,6 +4,7 @@ const File = require("./File.model");
 const Season = function (season) {
   this.Id = season.Id;
   this.Name = season.Name;
+  this.EpisodeCount = season.EpisodeCount;
   this.Files = season.Files;
 };
 
@@ -29,7 +30,9 @@ Season.GetAll = () => {
   });
 };
 
-Season.LoadEpisodes = (seasonId, offset, limit) => {
+Season.LoadEpisodes = async (seasonId, offset, limit) => {
+  const { EpisodeCount } = await Season.countEpisodes(seasonId);
+
   return new Promise((resolve, reject) => {
     sql.query(
       `SELECT 
@@ -44,6 +47,7 @@ Season.LoadEpisodes = (seasonId, offset, limit) => {
         LEFT JOIN Files 
         ON Seasons.Id = Files.SeasonId 
       WHERE Seasons.Id = ?
+      ORDER BY Files.OrderInList
       LIMIT ?, ?`,
       [seasonId, offset, limit],
       (err, results) => {
@@ -51,6 +55,7 @@ Season.LoadEpisodes = (seasonId, offset, limit) => {
         const resPack = new Season({
           Id: results[0].SeasonId,
           Name: results[0].SeasonName,
+          EpisodeCount: EpisodeCount,
           Files: results
             .map(
               (res) =>
@@ -65,6 +70,19 @@ Season.LoadEpisodes = (seasonId, offset, limit) => {
             .filter((file) => file.Id !== null),
         });
         resolve(resPack);
+      }
+    );
+  });
+};
+
+Season.countEpisodes = (seasonId) => {
+  return new Promise((resolve, reject) => {
+    sql.query(
+      "SELECT COUNT(ID) AS EpisodeCount FROM Files WHERE SeasonId = ?",
+      [seasonId],
+      (err, result) => {
+        if (err) reject(err);
+        resolve(result[0]);
       }
     );
   });

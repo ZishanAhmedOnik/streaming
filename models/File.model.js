@@ -6,6 +6,7 @@ const File = function (file) {
   this.FilePath = file.FilePath;
   this.CurrentTime = file.CurrentTime;
   this.Duration = file.Duration;
+  this.OrderInList = file.OrderInList;
 };
 
 File.getAll = function () {
@@ -55,9 +56,38 @@ File.getByIdWithSeason = (id) => {
   });
 };
 
-File.prototype.setStats = function() {
+File.getBySeasonId = function (seasonId) {
+  return new Promise((resolve, reject) => {
+    sql.query(
+      `SELECT Files.Id
+        ,Files.OrderInList
+        ,Files.FileName
+      FROM Files
+      WHERE SeasonId = ?
+      ORDER BY Files.OrderInList`,
+      [seasonId],
+      (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      }
+    );
+  });
+};
+
+File.prototype.setStats = function () {
   const query = `UPDATE Files SET CurrentTime = ?, Duration = ? WHERE Id = ?`;
   const params = [this.CurrentTime, this.Duration, this.Id];
+  return new Promise((resolve, reject) => {
+    sql.query(query, params, (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    });
+  });
+};
+
+File.prototype.setOrderInList = function () {
+  const query = `UPDATE Files SET OrderInList = ? WHERE Id = ?`;
+  const params = [this.OrderInList, this.Id];
   return new Promise((resolve, reject) => {
     sql.query(query, params, (err, results) => {
       if (err) reject(err);

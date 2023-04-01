@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const busboy = require("connect-busboy");
+const cors = require('cors');
 
 var indexRouter = require("./routes/index");
 const seasonsRoutes = require("./routes/seasons");
@@ -27,6 +28,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.use("/", indexRouter);
 app.use("/seasons/", seasonsRoutes);

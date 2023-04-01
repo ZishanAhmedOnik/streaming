@@ -1,22 +1,33 @@
 <%- include('../partials/header'); %> <%- include('../partials/navbar'); %>
 <div class="container mt-2">
   <div class="d-flex justify-content-between">
-    <h2><%= season.Name %></h2>
+    <h2 style="font-size: 60px"><%= season.Name %></h2>
     <p>Page: <span class="badge text-bg-primary"><%= pageId %></span></p>
   </div>
   <ul class="list-group">
     <% season.Files.forEach(file => { %>
-    <li class="list-group-item list-group-item-action d-flex flex-column mb-2" style="margin: 0; padding: 0;">
+    <li
+      class="list-group-item list-group-item-action d-flex flex-column mb-2"
+      style="margin: 0; padding: 0"
+    >
       <div
         style="width: 100%"
         class="d-flex justify-content-between align-items-center px-4 py-2"
       >
-        <p><%= file.FileName %></p>
-        <div>
-          <a href="/play_from_beginning/<%= file.Id %>" class="btn btn-primary"
+        <div style="flex: 3;">
+          <p style="font-size: 50px"><%= file.FileName %></p>
+        </div>
+        <div style="flex: 1;" class="d-flex flex-column justify-content-end">
+          <a
+            href="/play_from_beginning/<%= file.Id %>"
+            class="btn btn-primary m-1"
+            style="font-size: 25px"
             ><i class="fa-solid fa-play mr-2"></i> Play From Beginning</a
           >
-          <a href="/resume_play/<%= file.Id %>" class="btn btn-success"
+          <a
+            href="/resume_play/<%= file.Id %>"
+            class="btn btn-success m-1"
+            style="font-size: 25px"
             ><i class="fa-solid fa-forward-step mr-2"></i> Resume</a
           >
         </div>
@@ -37,7 +48,8 @@
       <a href="<%= Number.parseInt(pageId) - 1 %>" class="btn btn-primary mr-2"
         ><i class="fa-solid fa-backward"></i> Previous</a
       >
-      <% } %> <% if(season.Files.length === Number.parseInt(limit) ) { %>
+      <% } %> <% if(season.Files.length === Number.parseInt(limit) && pageId !==
+      pageCount ) { %>
       <a href="<%= Number.parseInt(pageId) + 1 %>" class="btn btn-primary"
         >Next <i class="fa-solid fa-forward"></i
       ></a>

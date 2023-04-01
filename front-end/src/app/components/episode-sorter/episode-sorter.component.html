@@ -1,0 +1,7 @@
+<page-slide>
+  <ul cdkDropList class="list-group" (cdkDropListDropped)="drop($event)">
+    <li class="list-group-item" *ngFor="let episode of episodes" cdkDrag>
+      {{ episode.FileName }}
+    </li>
+  </ul>
+</page-slide>

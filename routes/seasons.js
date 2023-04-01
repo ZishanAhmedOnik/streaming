@@ -18,10 +18,11 @@ router.post("/addseason", async (req, res) => {
 });
 
 router.get("/:seasonId/episodes/:pageId?", async (req, res) => {
-  const limit = 10;
+  const limit = 5;
   const pageId = req.params.pageId ? req.params.pageId : 1;
   const offset = (pageId - 1) * limit;
   let season = await Season.LoadEpisodes(req.params.seasonId, offset, limit);
+  const pageCount = Math.ceil(season.EpisodeCount / limit);
   season.Files = season.Files.map((s) => {
     const percentCompleted =
       (Number.parseFloat(s.CurrentTime) / Number.parseFloat(s.Duration)) * 100;
@@ -30,7 +31,7 @@ router.get("/:seasonId/episodes/:pageId?", async (req, res) => {
       percentCompleted: Number.isNaN(percentCompleted) ? 0 : percentCompleted,
     };
   });
-  res.render("seasons/episodes", { season, pageId, limit });
+  res.render("seasons/episodes", { season, pageId, limit, pageCount });
 });
 
 module.exports = router;
