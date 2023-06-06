@@ -130,3 +130,5 @@ dist
 .pnp.*
 
 uploads/
+package-lock.json
+config/db.config.js

@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Files {
+  Id          Int     @id @default(autoincrement())
+  FileName    String? @db.VarChar(255)
+  FilePath    String? @db.VarChar(255)
+  SeasonId    Int     @default(0)
+  CurrentTime Float   @default(0)
+  Duration    Float   @default(0)
+  OrderInList Int     @default(0)
+  Seasons     Seasons @relation(fields: [SeasonId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "SeasonId")
+
+  @@index([SeasonId], map: "SeasonId_idx")
+}
+
+model Seasons {
+  Id    Int     @id @default(autoincrement())
+  Name  String  @db.VarChar(255)
+  Files Files[]
+}

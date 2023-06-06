@@ -5,9 +5,10 @@ const fs = require("fs");
 const path = require("path");
 
 const File = require("../../models/File.model");
-const Season = require("../../models/Season.model");
 
 const publisher = require("../../redis/publisher");
+
+const prisma = require("../../prisma/client");
 
 router.post("/createSeason", async (req, res) => {
   publisher.publish("message", JSON.stringify(req.body));
@@ -29,7 +30,15 @@ router.post("/fileupload/", (req, res) => {
 });
 
 router.get("/getEpisodes/:seasonId", async (req, res) => {
-  res.json(await File.getBySeasonId(req.params.seasonId));
+  const season = await prisma.seasons.findUnique({
+    where: {
+      Id: parseInt(req.params.seasonId),
+    },
+    include: {
+      Files: true,
+    },
+  });
+  res.json(season.Files);
 });
 
 router.post("/updateEpisdeOrderInList/:seasonId", async (req, res) => {
@@ -42,7 +51,7 @@ router.post("/updateEpisdeOrderInList/:seasonId", async (req, res) => {
 });
 
 router.get("/get", async (req, res) => {
-  res.json(await Season.GetAll());
+  res.json(await prisma.seasons.findMany());
 });
 
 module.exports = router;
